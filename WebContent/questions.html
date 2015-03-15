@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- META -->
+<title>HTML KickStart Elements</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="" />
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="css/kickstart.css"
+	media="all" />
+<link rel="stylesheet" type="text/css" href="style.css" media="all" />
+<link rel="stylesheet" href="css/jquery.modal.css" />
+
+<!-- Javascript -->
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/kickstart.js"></script>
+ <script src="js/jquery.modal.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body>
+	<!-- NAVBAR START -->
+	<nav class="navbar">
+		<a class="hide-phone" id="logo" href="http://huit.harvard.edu/"><img
+			src="img/logo.png"></a>
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="users.html">Users</a></li>
+			<li><a href="courses.html">Courses</a></li>
+			<li><a href="questions.html">Questions</a></li>
+			<li><a href="answers.html">Answers</a></li>
+		</ul>
+	</nav>
+	<!-- NAVBAR END -->
+
+	<div class="grid">
+	<div class="col_12" style="margin-top: 100px;">
+	<div class="notice error hide" id="errorMsg"></div>
+		<ul class="tabs">
+			<li><a href="#viewTab"><i class="fa fa-list"></i> View Questions</a></li>
+			<li><a href="#createTab"><i class="fa fa-pencil"></i> Create Question</a></li>
+		</ul>
+
+		<div id="viewTab" class="tab-content">
+			<div class="col_12">
+				<h4>
+					<i class="fa fa-list"></i> Questions
+				</h4>
+				<table id="dataTable1">
+					<thead>
+						<tr>
+							<th>Question ID</th>
+							<th>Question Type</th>
+							<th>Text</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Loading Data...</td>
+							<td>Loading Data...</td>
+							<td>Loading Data...</td>
+							<td><a href=""><i class="fa fa-pencil"></i></a> <a href=""><i
+									class="fa fa-minus-square"></i></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- End viewTab -->
+		</div>
+
+		<div id="createTab" class="tab-content">
+			<div class="col_12">
+				<h4>
+					<i class="fa fa-pencil-square-o"></i> Create Question
+				</h4>
+				<form class="vertical" id="createForm">
+						<label for="questionID">Question ID</label> <input id="questionID" name ="questionID" type="text" /> 
+						<label for="questionType">Question Type</label> <input id="questionType" name ="questionType" type="text" /> 
+						<label for="questionText">Question Text</label> <input id="questionText" name ="questionText" type="text" />
+						<button type="submit">Submit</button>
+				</form>
+			</div>
+			<!-- End createTab -->
+		</div>
+
+
+<!-- Edit Modal -->
+<div id="editModal" style="display:none;">
+    <div>
+			<div class="col_12">
+				<h4>
+					<i class="fa fa-pencil-square-o"></i> Edit Question
+				</h4>
+				<form class="vertical" id="editForm">
+						<label for="editQuestionID">Question ID</label> <input id="editQuestionID" name ="questionID" type="text" /> 
+						<label for="editQuestionType">Question Type</label> <input id="editQuestionType" name ="questionType" type="text" /> 
+						<label for="editQuestionText">Question Text</label> <input id="editQuestionText" name ="questionText" type="text" />
+						<button type="submit">Submit</button>
+				</form>
+			</div>
+			<!-- End editModal -->
+		</div>
+    
+     <!-- <a href="#" rel="modal:close">Close</a> or press ESC</p> -->
+  </div>
+  
+  
+<!-- Delete Modal -->
+<div id="deleteModal" style="display:none;">
+    <div>
+			<div class="col_12">
+				<h6>
+					<i class="fa fa-pencil-square-o"></i> Confirm Delete ?
+				</h6> <br/>
+				<button id="deleteBtn" type="submit">Yes, Delete Question</button>
+				<a href="#" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
+			</div>
+			<!-- End deleteModal -->
+		</div>
+    
+  </div>
+
+<input type="hidden" name="deleteId" id="deleteId" />
+
+  <!-- Link to open the modal -->
+  <!-- <a href="#editModal" rel="modal:open">Open Modal</a> -->
+
+
+		</div>
+	</div>
+	<!-- End Grid -->
+	
+	
+	<script type='text/javascript'>//<![CDATA[ 
+
+	//Load List...
+	var tableData ;
+	function loadgrid()
+	{
+	  $.ajax({
+	    type: 'GET',
+	    dataType: 'json',
+	    url: 'http://localhost:8090/CESService/api/',
+	    success: function(tableDataJSON)
+	    {
+	    	tableData = tableDataJSON.result;
+	 
+	      // remove all data - but the headers!
+	      $("#dataTable1").find("tr:gt(0)").remove();
+	 
+	      if( tableData.length === 0)
+	      {
+	           $('#errorMsg').text('Sorry, <strong>no</strong> rows returned!');
+	           return;
+	      }
+	 
+	      for( var i=0; i < tableData.length; i++ )
+	      {
+	         var line = tableData[i];
+	         // insert after last row! (yes! it *can* be done differently - but it works!)
+	         $('#dataTable1 > tbody:last').append('<tr>'
+	        		 +'<td>'+line.title+'</td>'
+	        		 +'<td>'+line.harvardID+'</td>'
+	        		 +'<td>'+line.courseRole+'</td>'
+	        		 +'<td>'+line.courseID+'</td>'
+	        		 +"<td> <a class='editBtn' name='"+i+"'  href='#editModal' rel='modal:open'><i class='fa fa-pencil btn2'></i> Edit </a> &nbsp;&nbsp;&nbsp;&nbsp; <a class='delBtn' name='"+i+"' href='#deleteModal' rel='modal:open'><i class='fa fa-minus-square'></i> Remove </a></td>"
+	        		 +'</tr>');
+	      }
+	      
+	      $( ".editBtn" ).bind( "click", function() {
+	    	  $("#editUserId")[0].value=tableData[$(this).attr('name')].harvardID; 
+	    	  $("#editTitle")[0].value=tableData[$(this).attr('name')].title;
+	    	  $("#editRole")[0].value=tableData[$(this).attr('name')].courseRole;
+	    	  $("#editCourse")[0].value=tableData[$(this).attr('name')].courseID;
+	    	});
+	      
+	      $( ".delBtn" ).bind( "click", function() {
+	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].harvardID; 
+	    	 
+	    	});
+	    },
+	    error: function(data, errorText)
+	    {
+	      $("#errorMsg").text("Unable to fetch data, please retry").show(500);
+	      setTimeout(function(){  $("#errorMsg").hide(500); }, 3000);
+	    }
+	  });                     
+	}
+
+	//Load document...
+	$( document ).ready(function() {
+	    loadgrid();
+	    
+	});
+	
+	
+	//Edit Form
+	
+	$("#editForm").submit(function() {
+		
+	    var url = "http://localhost:8090/CESService/api/Questions/"+$("#editUserId")[0].value; // the script where you handle the form input.
+
+	    $.ajax({
+	           type: "POST",
+	           url: url,
+	           data: convertFormToJSON($("#editForm")),
+	           contentType: "application/json; charset=utf-8",
+	           dataType: "json",
+	           success: function(data)
+	           {
+	               alert("Updated"); 
+	               $("#cancelBtn").click();
+	           },
+	           error:  function(data)
+	           {
+	               alert('Error submitting/processing the data'); 
+	           }
+	         });
+
+	    return false;
+	});
+	
+	// Create Form
+$("#createForm").submit(function() {
+		
+	    var url = "http://localhost:8090/CESService/api/Questions/"; // the script where you handle the form input.
+
+	    $.ajax({
+	           type: "POST",
+	           url: url,
+	           data: convertFormToJSON($("#createForm")),
+	           contentType: "application/json; charset=utf-8",
+	           dataType: "json",
+	           success: function(data)
+	           {
+	               alert("Question Created");
+	               $("#cancelBtn").click();
+	           },
+	           error:  function(data)
+	           {
+	               alert('Error submitting/processing the data'); 
+	           }
+	         });
+
+	    return false;
+	});
+	
+	var deleteId;
+$("#deleteBtn").click(function() {
+	
+	var url = "http://localhost:8090/CESService/api/Questions/"+$("#deleteId")[0].value; // the script where you handle the form input.
+
+    $.ajax({
+           type: "DELETE",
+           url: url,
+           ataType: "jsonp",
+           success: function(data)
+           {
+               alert("Deleted");
+               $("#cancelBtn").click();
+           },
+           error:  function(data)
+           {
+               alert('Error submitting/processing the data'); 
+           }
+         });
+
+    return false;
+});
+
+	
+	
+	//Utils
+	
+	function convertFormToJSON(form){
+		var array = jQuery(form).serializeArray();
+		var json = {};
+		jQuery.each(array, function() {
+		if(typeof json[this.name] == 'undefined') {
+			json[this.name] = this.value || '';
+		}
+		else {
+			json[this.name] += "," + this.value ;
+		}
+		});
+		return  JSON.stringify(json);
+	}
+	                                          
+//]]>  
+
+</script>
+	
+	
+</body>
+</html>
