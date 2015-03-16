@@ -2,7 +2,7 @@
 <html>
 <head>
 <!-- META -->
-<title>HTML KickStart Elements</title>
+<title>HUIT Sample Course Evaluation System - Saravanan Krishnaraj </title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
@@ -72,6 +72,10 @@
 					</tbody>
 				</table>
 			</div>
+			<div class="col_12">
+				<div class="col_11"></div>
+				<div class="col_1"><button class="small" id="refreshBtn" >Refresh</button> <br /></div>				
+				</div>
 			<!-- End viewTab -->
 		</div>
 
@@ -101,6 +105,7 @@
 					<i class="fa fa-pencil-square-o"></i> Edit Answer
 				</h4>
 				<form class="vertical" id="editForm">
+						<input id="editID" name ="id" type="hidden" />
 						<label for="editCourseID">Course ID</label> <input id="editCourseID" name ="courseID" type="text" /> 
 						<label for="editQuestionID">Question ID</label> <input id="editQuestionID" name ="questionID" type="text" />
 						<label for="editTargetID">Target ID</label> <input id="editTargetID" name ="targetID" type="text" />
@@ -124,7 +129,7 @@
 					<i class="fa fa-pencil-square-o"></i> Confirm Delete ?
 				</h6> <br/>
 				<button id="deleteBtn" type="submit">Yes, Delete Answer</button>
-				<a href="#" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
+				<a href="" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
 			</div>
 			<!-- End deleteModal -->
 		</div>
@@ -138,6 +143,15 @@
 
 
 		</div>
+		
+		<div class="col_12" style="margin-top: 100px;" id="footer">
+		Sample Course Evaluation System Admin UI for HUIT Assignment - Designed by <a href="https://www.linkedin.com/in/saravanankrishnaraj">Saravanan Krishnaraj</a>
+		<br/> Browser-end: HTML5 KickStart | jQuery | Ajax
+		<br/> Front-end Server Layer: REST | Jersey | Jackson | GSON 
+		<br/> Back-end Server Layer: Couchbase NoSQL DB | Elastic Search
+		<br/> Monitoring: ElasticSearch | Logstash | Kibana
+		<br/> Deployed On: Amazon Web Services (AWS) EC2 (optional ELB + Auto Scale)
+		
 	</div>
 	<!-- End Grid -->
 	
@@ -151,10 +165,10 @@
 	  $.ajax({
 	    type: 'GET',
 	    dataType: 'json',
-	    url: 'http://localhost:8090/CESService/api/',
+	    url: 'http://localhost:8090/CESService/api/answers/',
 	    success: function(tableDataJSON)
 	    {
-	    	tableData = tableDataJSON.result;
+	    	tableData = tableDataJSON;
 	 
 	      // remove all data - but the headers!
 	      $("#dataTable1").find("tr:gt(0)").remove();
@@ -170,23 +184,26 @@
 	         var line = tableData[i];
 	         // insert after last row! (yes! it *can* be done differently - but it works!)
 	         $('#dataTable1 > tbody:last').append('<tr>'
-	        		 +'<td>'+line.title+'</td>'
-	        		 +'<td>'+line.harvardID+'</td>'
-	        		 +'<td>'+line.courseRole+'</td>'
 	        		 +'<td>'+line.courseID+'</td>'
+	        		 +'<td>'+line.questionID+'</td>'
+	        		 +'<td>'+line.targetID+'</td>'
+	        		 +'<td>'+line.respondentID+'</td>'
+	        		 +'<td>'+line.response+'</td>'
 	        		 +"<td> <a class='editBtn' name='"+i+"'  href='#editModal' rel='modal:open'><i class='fa fa-pencil btn2'></i> Edit </a> &nbsp;&nbsp;&nbsp;&nbsp; <a class='delBtn' name='"+i+"' href='#deleteModal' rel='modal:open'><i class='fa fa-minus-square'></i> Remove </a></td>"
 	        		 +'</tr>');
 	      }
 	      
 	      $( ".editBtn" ).bind( "click", function() {
-	    	  $("#editUserId")[0].value=tableData[$(this).attr('name')].harvardID; 
-	    	  $("#editTitle")[0].value=tableData[$(this).attr('name')].title;
-	    	  $("#editRole")[0].value=tableData[$(this).attr('name')].courseRole;
-	    	  $("#editCourse")[0].value=tableData[$(this).attr('name')].courseID;
+	    	  $("#editID")[0].value=tableData[$(this).attr('name')].id;
+	    	  $("#editCourseID")[0].value=tableData[$(this).attr('name')].courseID; 
+	    	  $("#editQuestionID")[0].value=tableData[$(this).attr('name')].questionID;
+	    	  $("#editTargetID")[0].value=tableData[$(this).attr('name')].targetID;
+	    	  $("#editRespondentID")[0].value=tableData[$(this).attr('name')].respondentID;
+	    	  $("#editResponse")[0].value=tableData[$(this).attr('name')].response;
 	    	});
 	      
 	      $( ".delBtn" ).bind( "click", function() {
-	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].harvardID; 
+	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].id; 
 	    	 
 	    	});
 	    },
@@ -209,7 +226,7 @@
 	
 	$("#editForm").submit(function() {
 		
-	    var url = "http://localhost:8090/CESService/api/Answers/"+$("#editUserId")[0].value; // the script where you handle the form input.
+	    var url = "http://localhost:8090/CESService/api/answers/"+$("#editID")[0].value; // the script where you handle the form input.
 
 	    $.ajax({
 	           type: "POST",
@@ -219,8 +236,8 @@
 	           dataType: "json",
 	           success: function(data)
 	           {
-	               alert("Updated"); 
 	               $("#cancelBtn").click();
+	               $("#refreshBtn").click(); 
 	           },
 	           error:  function(data)
 	           {
@@ -234,7 +251,7 @@
 	// Create Form
 $("#createForm").submit(function() {
 		
-	    var url = "http://localhost:8090/CESService/api/Answers/"; // the script where you handle the form input.
+	    var url = "http://localhost:8090/CESService/api/answers/"; // the script where you handle the form input.
 
 	    $.ajax({
 	           type: "POST",
@@ -244,8 +261,8 @@ $("#createForm").submit(function() {
 	           dataType: "json",
 	           success: function(data)
 	           {
-	               alert("Answer Created");
 	               $("#cancelBtn").click();
+	               $("#refreshBtn").click(); 
 	           },
 	           error:  function(data)
 	           {
@@ -259,7 +276,7 @@ $("#createForm").submit(function() {
 	var deleteId;
 $("#deleteBtn").click(function() {
 	
-	var url = "http://localhost:8090/CESService/api/Answers/"+$("#deleteId")[0].value; // the script where you handle the form input.
+	var url = "http://localhost:8090/CESService/api/answers/"+$("#deleteId")[0].value; // the script where you handle the form input.
 
     $.ajax({
            type: "DELETE",
@@ -267,8 +284,8 @@ $("#deleteBtn").click(function() {
            ataType: "jsonp",
            success: function(data)
            {
-               alert("Deleted");
                $("#cancelBtn").click();
+               $("#refreshBtn").click(); 
            },
            error:  function(data)
            {
@@ -279,7 +296,10 @@ $("#deleteBtn").click(function() {
     return false;
 });
 
-	
+
+$("#refreshBtn").click(function() {
+	loadgrid();
+});
 	
 	//Utils
 	

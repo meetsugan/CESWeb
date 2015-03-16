@@ -2,7 +2,7 @@
 <html>
 <head>
 <!-- META -->
-<title>HTML KickStart Elements</title>
+<title>HUIT Sample Course Evaluation System - Saravanan Krishnaraj </title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
@@ -76,6 +76,10 @@
 					</tbody>
 				</table>
 			</div>
+			<div class="col_12">
+				<div class="col_11"></div>
+				<div class="col_1"><button class="small" id="refreshBtn" >Refresh</button> <br /></div>				
+				</div>
 			<!-- End viewTab -->
 		</div>
 
@@ -86,27 +90,27 @@
 				</h4>
 				<form class="vertical" id="createForm">
 						<label for="courseID">Course ID</label> <input id="courseID" name ="courseID" type="text" /> 
-						<label for="year">Academic Year</label> <input id="year" name ="year" type="text" /> 
+						<label for="academicYear">Academic Year</label> <input id="academicYear" name ="academicYear" type="text" /> 
 						<label for="term">Term</label> 
 						<select id="term" name ="term" >
 							<option value="0">-- Choose --</option>
-							<option value="Fall">Fall</option>
-							<option value="Spring">Spring</option>
-							<option value="Summer">Summer</option>
+							<option value="1">Fall</option>
+							<option value="2">Spring</option>
+							<option value="3">Summer</option>
 						</select>
-						<label for="evalCourse">Evaluate Course?</label> 
-						<select id="evalCourse" name ="evalCourse" >
+						<label for="evaluateCourse">Evaluate Course?</label> 
+						<select id="evaluateCourse" name ="evaluateCourse" >
 							<option value="0">-- Choose --</option>
-							<option value="Y">Yes</option>
-							<option value="N">No</option>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
 						</select>
-						<label for="evalStart">Evaluation Start</label> <input id="evalStart" name ="evalStart" type="text" />
-						<label for="evalEnd">Evaluation End</label> <input id="evalEnd" name ="evalEnd" type="text" />
+						<label for="evaluationStartDate">Evaluation Start</label> <input id="evaluationStartDate" name ="evaluationStartDate" type="text" />
+						<label for="evaluationEndDate">Evaluation End</label> <input id="evaluationEndDate" name ="evaluationEndDate" type="text" />
 						<label for="publishResponses">Publish Responses ?</label> 
 						<select id="publishResponses" name ="publishResponses" >
 							<option value="0">-- Choose --</option>
-							<option value="Y">Yes</option>
-							<option value="N">No</option>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
 						</select>
 
 						<button type="submit">Submit</button>
@@ -124,28 +128,29 @@
 					<i class="fa fa-pencil-square-o"></i> Edit Course
 				</h4>
 				<form class="vertical" id="editForm">
+						<input id="editID" name ="id" type="hidden" />
 						<label for="editCourseID">Course ID</label> <input id="editCourseID" name ="courseID" type="text" /> 
-						<label for="editYear">Academic Year</label> <input id="editYear" name ="year" type="text" /> 
+						<label for="editAcademicYear">Academic Year</label> <input id="editAcademicYear" name ="academicYear" type="text" /> 
 						<label for="editTerm">Term</label>
 						<select id="editTerm" name ="term" >
 							<option value="0">-- Choose --</option>
-							<option value="Fall">Fall</option>
-							<option value="Spring">Spring</option>
-							<option value="Summer">Summer</option>
+							<option value="1">Fall</option>
+							<option value="2">Spring</option>
+							<option value="3">Summer</option>
 						</select>
-						<label for="editEvalCourse">Evaluate Course?</label> 
-						<select id="editEvalCourse" name ="evalCourse" >
+						<label for="editEvaluateCourse">Evaluate Course?</label> 
+						<select id="editEvaluateCourse" name ="evaluateCourse" >
 							<option value="0">-- Choose --</option>
-							<option value="Y">Yes</option>
-							<option value="N">No</option>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
 						</select>
-						<label for="editEvalStart">Evaluation Start</label> <input id="editEvalStart" name ="evalStart" type="text" />
-						<label for="editEvalEnd">Evaluation End</label> <input id="editEvalEnd" name ="evalEnd" type="text" />
+						<label for="editEvaluationStartDate">Evaluation Start</label> <input id="editEvaluationStartDate" name ="evaluationStartDate" type="text" />
+						<label for="editEvaluationEndDate">Evaluation End</label> <input id="editEvaluationEndDate" name ="evaluationEndDate" type="text" />
 						<label for="editPublishResponses">Publish Responses ?</label> 
 						<select id="editPublishResponses" name ="publishResponses" >
 							<option value="0">-- Choose --</option>
-							<option value="Y">Yes</option>
-							<option value="N">No</option>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
 						</select>
 						<button type="submit">Submit</button>
 				</form>
@@ -165,7 +170,7 @@
 					<i class="fa fa-pencil-square-o"></i> Confirm Delete ?
 				</h6> <br/>
 				<button id="deleteBtn" type="submit">Yes, Delete Course</button>
-				<a href="#" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
+				<a href="" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
 			</div>
 			<!-- End deleteModal -->
 		</div>
@@ -179,6 +184,14 @@
 
 
 		</div>
+		
+		<div class="col_12" style="margin-top: 100px;" id="footer">
+		Sample Course Evaluation System Admin UI for HUIT Assignment - Designed by <a href="https://www.linkedin.com/in/saravanankrishnaraj">Saravanan Krishnaraj</a>
+		<br/> Browser-end: HTML5 KickStart | jQuery | Ajax
+		<br/> Front-end Server Layer: REST | Jersey | Jackson | GSON 
+		<br/> Back-end Server Layer: Couchbase NoSQL DB | Elastic Search
+		<br/> Monitoring: ElasticSearch | Logstash | Kibana
+		<br/> Deployed On: Amazon Web Services (AWS) EC2 (optional ELB + Auto Scale)
 	</div>
 	<!-- End Grid -->
 	
@@ -192,10 +205,10 @@
 	  $.ajax({
 	    type: 'GET',
 	    dataType: 'json',
-	    url: 'http://localhost:8090/CESService/api/',
+	    url: 'http://localhost:8090/CESService/api/courses',
 	    success: function(tableDataJSON)
 	    {
-	    	tableData = tableDataJSON.result;
+	    	tableData = tableDataJSON;
 	 
 	      // remove all data - but the headers!
 	      $("#dataTable1").find("tr:gt(0)").remove();
@@ -211,23 +224,30 @@
 	         var line = tableData[i];
 	         // insert after last row! (yes! it *can* be done differently - but it works!)
 	         $('#dataTable1 > tbody:last').append('<tr>'
-	        		 +'<td>'+line.title+'</td>'
-	        		 +'<td>'+line.harvardID+'</td>'
-	        		 +'<td>'+line.courseRole+'</td>'
 	        		 +'<td>'+line.courseID+'</td>'
+	        		 +'<td>'+line.academicYear+'</td>'
+	        		 +'<td>'+line.term+'</td>'
+	        		 +'<td>'+line.evaluateCourse+'</td>'
+	        		 +'<td>'+line.evaluationStartDate+'</td>'
+	        		 +'<td>'+line.evaluationEndDate+'</td>'
+	        		 +'<td>'+line.publishResponses+'</td>'
 	        		 +"<td> <a class='editBtn' name='"+i+"'  href='#editModal' rel='modal:open'><i class='fa fa-pencil btn2'></i> Edit </a> &nbsp;&nbsp;&nbsp;&nbsp; <a class='delBtn' name='"+i+"' href='#deleteModal' rel='modal:open'><i class='fa fa-minus-square'></i> Remove </a></td>"
 	        		 +'</tr>');
 	      }
 	      
 	      $( ".editBtn" ).bind( "click", function() {
-	    	  $("#editUserId")[0].value=tableData[$(this).attr('name')].harvardID; 
-	    	  $("#editTitle")[0].value=tableData[$(this).attr('name')].title;
-	    	  $("#editRole")[0].value=tableData[$(this).attr('name')].courseRole;
-	    	  $("#editCourse")[0].value=tableData[$(this).attr('name')].courseID;
+	    	  $("#editID")[0].value=tableData[$(this).attr('name')].id;
+	    	  $("#editCourseID")[0].value=tableData[$(this).attr('name')].courseID; 
+	    	  $("#editAcademicYear")[0].value=tableData[$(this).attr('name')].academicYear;
+	    	  $("#editTerm")[0].value=tableData[$(this).attr('name')].term;
+	    	  $("#editEvaluateCourse")[0].value=tableData[$(this).attr('name')].evaluateCourse;
+	    	  $("#editEvaluationStartDate")[0].value=tableData[$(this).attr('name')].evaluationStartDate;
+	    	  $("#editEvaluationEndDate")[0].value=tableData[$(this).attr('name')].evaluationEndDate;
+	    	  $("#editPublishResponses")[0].value=tableData[$(this).attr('name')].publishResponses;
 	    	});
 	      
 	      $( ".delBtn" ).bind( "click", function() {
-	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].harvardID; 
+	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].id; 
 	    	 
 	    	});
 	    },
@@ -250,7 +270,7 @@
 	
 	$("#editForm").submit(function() {
 		
-	    var url = "http://localhost:8090/CESService/api/Courses/"+$("#editUserId")[0].value; // the script where you handle the form input.
+	    var url = "http://localhost:8090/CESService/api/courses/"+$("#editID")[0].value; // the script where you handle the form input.
 
 	    $.ajax({
 	           type: "POST",
@@ -260,8 +280,8 @@
 	           dataType: "json",
 	           success: function(data)
 	           {
-	               alert("Updated"); 
 	               $("#cancelBtn").click();
+	               $("#refreshBtn").click();
 	           },
 	           error:  function(data)
 	           {
@@ -275,7 +295,7 @@
 	// Create Form
 $("#createForm").submit(function() {
 		
-	    var url = "http://localhost:8090/CESService/api/Courses/"; // the script where you handle the form input.
+	    var url = "http://localhost:8090/CESService/api/courses/"; // the script where you handle the form input.
 
 	    $.ajax({
 	           type: "POST",
@@ -285,8 +305,8 @@ $("#createForm").submit(function() {
 	           dataType: "json",
 	           success: function(data)
 	           {
-	               alert("Course Created");
 	               $("#cancelBtn").click();
+	               $("#refreshBtn").click();
 	           },
 	           error:  function(data)
 	           {
@@ -300,7 +320,7 @@ $("#createForm").submit(function() {
 	var deleteId;
 $("#deleteBtn").click(function() {
 	
-	var url = "http://localhost:8090/CESService/api/Courses/"+$("#deleteId")[0].value; // the script where you handle the form input.
+	var url = "http://localhost:8090/CESService/api/courses/"+$("#deleteId")[0].value; // the script where you handle the form input.
 
     $.ajax({
            type: "DELETE",
@@ -308,8 +328,8 @@ $("#deleteBtn").click(function() {
            ataType: "jsonp",
            success: function(data)
            {
-               alert("Deleted");
                $("#cancelBtn").click();
+               $("#refreshBtn").click();
            },
            error:  function(data)
            {
@@ -320,6 +340,10 @@ $("#deleteBtn").click(function() {
     return false;
 });
 
+
+$("#refreshBtn").click(function() {
+	loadgrid();
+});
 	
 	
 	//Utils
@@ -337,7 +361,7 @@ $("#deleteBtn").click(function() {
 		});
 		return  JSON.stringify(json);
 	}
-	                                          
+	
 //]]>  
 
 </script>

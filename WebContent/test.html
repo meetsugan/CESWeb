@@ -51,7 +51,7 @@ function loadgrid()
     url: 'http://localhost:8090/CESService/api/',
     success: function(tableDataJSON)
     {
-    	var tableData = tableDataJSON.result;
+    	var tableData = tableDataJSON;
  
       // remove all data - but the headers!
       $("#dataTable1").find("tr:gt(0)").remove();

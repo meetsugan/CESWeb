@@ -2,7 +2,7 @@
 <html>
 <head>
 <!-- META -->
-<title>HTML KickStart Elements</title>
+<title>HUIT Sample Course Evaluation System - Saravanan Krishnaraj </title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
@@ -71,6 +71,10 @@
 				</table>
 			</div>
 			<!-- End viewTab -->
+			<div class="col_12">
+				<div class="col_11"></div>
+				<div class="col_1"><button class="small" id="refreshBtn" >Refresh</button> <br /></div>				
+				</div>
 		</div>
 
 		<div id="createTab" class="tab-content">
@@ -109,6 +113,7 @@
 					<i class="fa fa-pencil-square-o"></i> Edit User
 				</h4>
 				<form class="vertical" id="editForm">
+				<input id="editID" name ="id" type="hidden" /> 
 						<label for="userId">Harvard ID</label> <input id="editUserId" name ="harvardID" 
 							type="text" /> <label for="title">Title</label> <input
 							id="editTitle" name ="title" type="text" /> <label for="role">Course Role</label>
@@ -142,7 +147,7 @@
 					<i class="fa fa-pencil-square-o"></i> Confirm Delete ?
 				</h6> <br/>
 				<button id="deleteBtn" type="submit">Yes, Delete User</button>
-				<a href="#" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
+				<a href="" rel="modal:close"><button id="cancelBtn" type="button" >Cancel</button></a>
 			</div>
 			<!-- End deleteModal -->
 		</div>
@@ -156,6 +161,16 @@
 
 
 		</div>
+		
+		
+		<div class="col_12" style="margin-top: 100px;" id="footer">
+		Sample Course Evaluation System Admin UI for HUIT Assignment - Designed by <a href="https://www.linkedin.com/in/saravanankrishnaraj">Saravanan Krishnaraj</a>
+		<br/> Browser-end: HTML5 KickStart | jQuery | Ajax
+		<br/> Front-end Server Layer: REST | Jersey | Jackson | GSON 
+		<br/> Back-end Server Layer: Couchbase NoSQL DB | Elastic Search
+		<br/> Monitoring: ElasticSearch | Logstash | Kibana
+		<br/> Deployed On: Amazon Web Services (AWS) EC2 (optional ELB + Auto Scale)
+		
 	</div>
 	<!-- End Grid -->
 	
@@ -169,10 +184,10 @@
 	  $.ajax({
 	    type: 'GET',
 	    dataType: 'json',
-	    url: 'http://localhost:8090/CESService/api/',
+	    url: 'http://localhost:8090/CESService/api/users/',
 	    success: function(tableDataJSON)
 	    {
-	    	tableData = tableDataJSON.result;
+	    	tableData = tableDataJSON;
 	 
 	      // remove all data - but the headers!
 	      $("#dataTable1").find("tr:gt(0)").remove();
@@ -197,6 +212,7 @@
 	      }
 	      
 	      $( ".editBtn" ).bind( "click", function() {
+	    	  $("#editID")[0].value=tableData[$(this).attr('name')].id; 
 	    	  $("#editUserId")[0].value=tableData[$(this).attr('name')].harvardID; 
 	    	  $("#editTitle")[0].value=tableData[$(this).attr('name')].title;
 	    	  $("#editRole")[0].value=tableData[$(this).attr('name')].courseRole;
@@ -204,7 +220,7 @@
 	    	});
 	      
 	      $( ".delBtn" ).bind( "click", function() {
-	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].harvardID; 
+	    	  $("#deleteId")[0].value=tableData[$(this).attr('name')].id; 
 	    	 
 	    	});
 	    },
@@ -227,7 +243,7 @@
 	
 	$("#editForm").submit(function() {
 		
-	    var url = "http://localhost:8090/CESService/api/users/"+$("#editUserId")[0].value; // the script where you handle the form input.
+	    var url = "http://localhost:8090/CESService/api/users/"+$("#editID")[0].value; // the script where you handle the form input.
 
 	    $.ajax({
 	           type: "POST",
@@ -237,8 +253,9 @@
 	           dataType: "json",
 	           success: function(data)
 	           {
-	               alert("Updated"); 
+	            //   alert("Updated"); 
 	               $("#cancelBtn").click();
+	               $("#refreshBtn").click(); 
 	           },
 	           error:  function(data)
 	           {
@@ -262,8 +279,9 @@ $("#createForm").submit(function() {
 	           dataType: "json",
 	           success: function(data)
 	           {
-	               alert("User Created");
+	              // alert("User Created");
 	               $("#cancelBtn").click();
+	               $("#refreshBtn").click(); 
 	           },
 	           error:  function(data)
 	           {
@@ -285,8 +303,9 @@ $("#deleteBtn").click(function() {
            ataType: "jsonp",
            success: function(data)
            {
-               alert("Deleted");
+               //alert("Deleted");
                $("#cancelBtn").click();
+               $("#refreshBtn").click();               
            },
            error:  function(data)
            {
@@ -297,6 +316,10 @@ $("#deleteBtn").click(function() {
     return false;
 });
 
+
+$("#refreshBtn").click(function() {
+	loadgrid();
+});
 	
 	
 	//Utils
@@ -314,6 +337,8 @@ $("#deleteBtn").click(function() {
 		});
 		return  JSON.stringify(json);
 	}
+	
+	
 	                                          
 //]]>  
 
